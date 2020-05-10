@@ -1,0 +1,55 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function forEach (array, callback, someObject) {
+  var forEachCallback = callback
+  if (someObject) {
+    forEachCallback = callback.bind(someObject)
+  }
+  for (i=0; i<array.length; i++){
+  forEachCallback(array[i], i, array);
+}
+}
+
+
+tests({
+
+  'it should run callback array.length times': function () {
+    var counter = 0;
+    forEach([1], function(){
+      counter++;
+    })
+    eq(1, counter);
+  },
+
+  'it should have access to array element': function() {
+    forEach ([1], function(number) {
+      eq(1, number)
+    })
+    
+  },
+
+  'it should have access to position number': function() {
+    forEach ([1], function(number, position, array){
+      eq(0, position);
+    })
+  },
+  'it should pass in original array': function() {
+
+    var testArray = [1,2,3]
+
+    forEach (testArray, function(number, position, originalArray){
+      eq(testArray, originalArray)
+    })
+  },
+
+  'it should pass in thisValue': function () {
+    forEach ([1], function(number, position, array){
+      eq(this.description, 'custom thisValue')
+    }, {description: 'custom thisValue'})
+  }
+
+});
+
+
+</script>
