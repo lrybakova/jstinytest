@@ -1,0 +1,120 @@
+<script src="../tinytest.js"></script>
+<script>
+
+// Example 1 
+// filter([1,2,3], function() {
+// console.log('hi');
+//});
+
+//Example 2
+// filter ([1,2,3], function(element) {
+//console.log(element);
+//});
+
+//Example 3 
+// filter ([1,2,3], function(element, position) {
+// console.log(position);
+//});
+
+// Example 4 
+// filter ([1,2,3], function(element, position, originalArray) {
+// console.log(originalArray);
+//});
+
+// Example 5 
+// filter ([1,2,3], function(element, position, optionalObject) {
+// console.log(this.description)
+//}, {description: 'I am optional object'});
+
+// Example 6
+// var testArray = [1,2,3]
+// var filteredArray = filter(testArray, function(){});
+// testArray !== filteredArray
+// });
+
+// Example 7 
+// var testArray = [1,2,3]
+// var filteredArray = filter(testArray, function(element){
+// return element > 1;
+// });
+// Expect filteredArray to be [2, 3]
+function filter (array, callback, optionalObject) {
+  var filterCallback = callback;
+  if (optionalObject) {
+    filterCallback = callback.bind(optionalObject);
+  }
+  var filteredArray = [];
+  for (i=0; i<array.length; i++) {
+    if (filterCallback(array[i], i, array)) {
+    filteredArray.push(array[i])
+    }
+  }
+  
+  console.log(filteredArray);
+  return filteredArray;
+  
+}
+
+  tests({
+  
+    'it should run callback array.length times': function () {
+    var counter = 0;
+    filter([1, 2, 3], function() {
+      counter++;
+    })
+    eq(3, counter);
+  },
+
+  'it should have access to array element': function() {
+    filter ([1], function(element) {
+      eq(1, element)
+    })
+    
+  },
+
+  'it should have access to position number': function() {
+    filter ([1], function(element, position, array){
+      eq(0, position);
+    })
+  },
+  'it should pass in original array': function() {
+
+    var testArray = [1,2,3]
+
+    filter (testArray, function(element, position, originalArray){
+      eq(testArray, originalArray)
+    })
+  },
+
+  'it should pass in thisValue': function () {
+    filter ([1], function(){
+      eq(this.description, 'custom thisValue')
+    }, {description: 'custom thisValue'})
+  },
+
+  'it should return an array': function () {
+    var originalArray = []
+    var filteredArray = filter(originalArray, function(){} );
+    //filteredArray is actually an array
+    eq(Array.isArray(filteredArray), true)
+
+  },
+
+  'it should return new array, not the one being filtered': function () {
+    var arrayBeingFiltered = []
+    var filteredArray = filter(arrayBeingFiltered, function(){} );
+    //filteredArray is actually an array
+    assert(filteredArray !== arrayBeingFiltered); 
+  },
+
+  'it should return array that only has elements where callback() is true': function() {
+  
+    var filteredArray = filter([1,2], function (number){
+      return number > 1;
+     
+    });
+    eq(filteredArray.length, 1)
+  }
+  
+  });
+</script>
