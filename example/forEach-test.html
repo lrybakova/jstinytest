@@ -1,27 +1,27 @@
 <script src="../tinytest.js"></script>
 <script>
-  
-// Example 1 
+
+// Example 1 Callback should run 3 times
 // forEach([1,2,3], function(){
 // console.log('hi');
 //});
 
-//Example 2
+//Example 2 Callback has an access to ith element
 // forEach ([1,2,3], function(number){
 //console.log(number);
 //});
 
-//Example 3 
+//Example 3 Callback has an accsess to i
 // forEach ([1,2,3], function(number, position){
 // console.log(position);
 //});
 
-// Example 4 
+// Example 4 Callback has an access to original array
 // forEach ([1,2,3], function(number, position, array){
 // console.log(array);
 //});
 
-// Example 5 
+// Example 5 optional this
 // forEach ([1,2,3], function(number, position, optionalObject) {
 // console.log(this.description)
 //}, {description: 'I am optional object'});

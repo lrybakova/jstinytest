@@ -1,0 +1,128 @@
+<script src="../tinytest.js"></script>
+<script>
+
+// Example 1 Callback should run 3 times
+// map([1,2,3], function() {
+// console.log('hi');
+//});
+
+//Example 2 Callback has an access to ith element
+// map ([1,2,3], function(element) {
+//console.log(element);
+//});
+
+//Example 3 Callback has an accsess to i
+// map ([1,2,3], function(element, position) {
+// console.log(position);
+//});
+
+// Example 4  Callback has an access to original array
+// map ([1,2,3], function(element, position, originalArray) {
+// console.log(originalArray);
+//});
+
+// Example 5 Optional this
+// map ([1,2,3], function(element, position, optionalObject) {
+// console.log(this.description)
+//}, {description: 'I am optional object'});
+
+// Example 6 mappedArray is not equal to originalArray
+// var originalArray = [1,2,3]
+// var mappedArray = map(originalArray, function(){});
+// originalArray !== mappedArray
+// });
+
+
+// Example 7 mappedArray should have elements changed by  callback
+// var originalArray = [1,2,3]
+// var mappedArray = map(originalArray, function(element){
+// return element * 1;
+// });
+// Expect mappedArray to be [2, 4, 6]
+function map (array, callback, optionalObject) {
+  var mapCallback = callback;
+  if (optionalObject) {
+    mapCallback = callback.bind(optionalObject);
+  }
+  var mappedArray = [];
+  for (i=0; i<array.length; i++) {
+    if (i in array) {
+    mappedArray[i] = mapCallback(array[i], i, array);
+  }
+  }
+  return mappedArray;
+  
+}
+
+  tests({
+  
+    'it should run callback array.length times': function () {
+    var counter = 0;
+    map ([1, 2, 3], function() {
+      counter++;
+    })
+    eq(3, counter);
+  },
+
+  'it should have access to array element': function() {
+    map ([1], function(element) {
+      eq(1, element)
+    })
+    
+  },
+
+  'it should have access to position number': function() {
+    map ([1], function(element, position, array){
+      eq(0, position);
+    })
+  },
+  'it should pass in original array': function() {
+
+    var testArray = [1,2,3]
+
+    map (testArray, function(element, position, originalArray){
+      eq(testArray, originalArray)
+    })
+  },
+
+  'it should pass in thisValue': function () {
+    map ([1], function(){
+      eq(this.description, 'custom thisValue')
+    }, {description: 'custom thisValue'})
+  },
+
+  'it should return an array': function () {
+    var originalArray = []
+    var mappedArray = map(originalArray, function(){} );
+    //mappedArray is actually an array
+    eq(Array.isArray(mappedArray), true)
+
+  },
+
+  'it should return new array, not the one being mapped': function () {
+    var arrayBeingMapped = []
+    var mappedArray = map(arrayBeingMapped, function(){} );
+    //mappedArray is actually an array
+    assert(mappedArray !== arrayBeingMapped); 
+  },
+
+  'it should return array that only has elements where callback() is true': function() {
+  
+    var mappedArray = map([1,2, 3], function (number){
+      return number * 2;
+    });
+    eq(mappedArray.length, 3)
+    eq(mappedArray[0], 2)
+
+  },
+  'it should skip unasigned values': function() {
+    var weirdArray = [, 1];
+    var mappedArray = map(weirdArray, function double(number) {
+      return number * 2;
+    });
+    eq(0 in mappedArray, false);
+    eq(mappedArray[1], 2);
+  }
+  
+  });
+</script>

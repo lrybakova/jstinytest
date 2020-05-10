@@ -1,35 +1,35 @@
 <script src="../tinytest.js"></script>
 <script>
 
-// Example 1 
+// Example 1 Callback should run 3 times.
 // filter([1,2,3], function() {
 // console.log('hi');
 //});
 
-//Example 2
+//Example 2 Callback has an access to ith element.
 // filter ([1,2,3], function(element) {
 //console.log(element);
 //});
 
-//Example 3 
+//Example 3 Callback has an accsess to i.
 // filter ([1,2,3], function(element, position) {
 // console.log(position);
 //});
 
-// Example 4 
+// Example 4  Callback has an access to originalArray.
 // filter ([1,2,3], function(element, position, originalArray) {
 // console.log(originalArray);
 //});
 
-// Example 5 
+// Example 5 optional this.
 // filter ([1,2,3], function(element, position, optionalObject) {
 // console.log(this.description)
 //}, {description: 'I am optional object'});
 
-// Example 6
-// var testArray = [1,2,3]
-// var filteredArray = filter(testArray, function(){});
-// testArray !== filteredArray
+// Example 6 
+// var originalArray = [1,2,3]
+// var filteredArray = filter(originalArray, function(){});
+// originalArray !== filteredArray
 // });
 
 // Example 7 
@@ -111,9 +111,9 @@ function filter (array, callback, optionalObject) {
   
     var filteredArray = filter([1,2], function (number){
       return number > 1;
-     
     });
     eq(filteredArray.length, 1)
+
   }
   
   });
