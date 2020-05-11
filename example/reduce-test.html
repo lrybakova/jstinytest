@@ -1,6 +1,56 @@
 <script src="../tinytest.js"></script>
 <script>
 
+// Prototype implementation 
+// function reduce (array, callback, startingValue) {
+// var resultSoFar = startingValue;
+//     for (i=0; i<array.length; i++) {
+// resultSoFar = callback(resultSoFar, array[i]);
+// }
+// return resultSoFar;
+// }
+
+//Function signature
+ // reduce(array, callback[, initialValue])
+
+// Callback parameters: 
+  // previousValue (resultSoFar e.g. the value received in last iteration)
+  // currentValue (array[i] e.g. next array item which is going to be joined to resultSoFar)
+  // currentIndex (position of the item in the array, index)
+  // array (array itself)
+
+// Returns value:
+    //Returns  single value
+// 
+// Requirements: 
+
+// If initialValue, previousValue should start with initialValue
+// If initialValue, currentValue should start with array[0]
+// If initialValue, callback should start ar array[0]
+// If initialValue, callback runs array.length times
+
+// If no initialValue, previousValue should start with array[0]
+// If no initialValue, currentValue start with array[1]
+// If no initialValue, callback should start at index 1
+// If no initialValue, callback will run length-1 times
+
+// If initialValue, and array is empty, return initialValue, without calling callback 
+// If no initialValue, and array has one element, return element, without calling a callback
+
+// It should actually reduce 
+// Callback should exclude holes
+// If no initialValue, and array is empty, it should throw TypeError
+// It should pass array as fourth argument 
+
+
+
+
+
+
+
+
+
+
 // Example 1 Callback should run 3 times
 // map([1,2,3], function() {
 // console.log('hi');
@@ -39,19 +89,15 @@
 // return element * 1;
 // });
 // Expect mappedArray to be [2, 4, 6]
-function map (array, callback, optionalObject) {
-  var mapCallback = callback;
-  if (optionalObject) {
-    mapCallback = callback.bind(optionalObject);
-  }
-  var mappedArray = [];
-  for (i=0; i<array.length; i++) {
-    if (i in array) {
-    mappedArray[i] = mapCallback(array[i], i, array);
-  }
-  }
-  return mappedArray;
-  
+
+
+
+function reduce (array, callback, startingValue) {
+var resultSoFar = startingValue;
+    for (i=0; i<array.length; i++) {
+resultSoFar = callback(resultSoFar, array[i]);
+}
+return resultSoFar;
 }
 
   tests({
@@ -120,7 +166,6 @@ function map (array, callback, optionalObject) {
     var mappedArray = map(weirdArray, function double(number) {
       return number * 2;
     });
-
     eq(0 in mappedArray, false);
     eq(mappedArray[1], 2);
   }
